@@ -1,0 +1,119 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: AppUtil</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.cognizant.projectmanager.util</a> ]
+</div>
+
+<h1>Coverage Summary for Class: AppUtil (com.cognizant.projectmanager.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">AppUtil</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (8/ 8)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.cognizant.projectmanager.util;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import java.sql.Date;
+<i>4</i>&nbsp;import java.sql.ResultSet;
+<i>5</i>&nbsp;import java.sql.SQLException;
+<i>6</i>&nbsp;import java.sql.Timestamp;
+<i>7</i>&nbsp;import java.time.LocalDate;
+<i>8</i>&nbsp;import java.time.LocalDateTime;
+<i>9</i>&nbsp;
+<b class="fc"><i>10</i>&nbsp;public class AppUtil {</b>
+<i>11</i>&nbsp;
+<i>12</i>&nbsp;    public static LocalDate getLocalDate(final Date date) {
+<b class="fc"><i>13</i>&nbsp;        return date == null ? null : date.toLocalDate();</b>
+<i>14</i>&nbsp;    }
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;    public static LocalDateTime getLocalDateTime(final Timestamp time) {
+<b class="fc"><i>17</i>&nbsp;        return time == null ? null : time.toLocalDateTime();</b>
+<i>18</i>&nbsp;    }
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    public static Date getSqlDate(final LocalDate date) {
+<b class="fc"><i>21</i>&nbsp;        return date == null ? null : Date.valueOf(date);</b>
+<i>22</i>&nbsp;    }
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    public static boolean getBoolean(final String value) {
+<b class="fc"><i>25</i>&nbsp;        return  &quot;Y&quot;.equalsIgnoreCase(value) ? true : false;</b>
+<i>26</i>&nbsp;    }
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    public static String getStrFromBoolean(final boolean value) {
+<b class="fc"><i>29</i>&nbsp;        return value ? &quot;Y&quot; : &quot;N&quot;;</b>
+<i>30</i>&nbsp;    }
+<i>31</i>&nbsp;
+<i>32</i>&nbsp;    public static &lt;T&gt; T getOptionalValue(final ResultSet rs, final String columnName, final Class&lt;T&gt; clazz) throws SQLException {
+<b class="fc"><i>33</i>&nbsp;        final T value = rs.getObject(columnName, clazz);</b>
+<b class="fc"><i>34</i>&nbsp;        return rs.wasNull() ? null : value;</b>
+<i>35</i>&nbsp;    }
+<i>36</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-08-19 00:26</div>
+</div>
+</body>
+</html>

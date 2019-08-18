@@ -1,0 +1,140 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: User</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.cognizant.projectmanager.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: User (com.cognizant.projectmanager.model)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">User</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/ 10)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    80%
+  </span>
+  <span class="absValue">
+    (8/ 10)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">User$UserBuilder</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (9/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    81.8%
+  </span>
+  <span class="absValue">
+    (9/ 11)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.cognizant.projectmanager.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+<i>4</i>&nbsp;import lombok.*;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import javax.validation.constraints.NotEmpty;
+<i>7</i>&nbsp;import javax.validation.constraints.NotNull;
+<i>8</i>&nbsp;
+<i>9</i>&nbsp;/**
+<i>10</i>&nbsp; * Created by hp on 10-08-2019.
+<i>11</i>&nbsp; */
+<b class="fc"><i>12</i>&nbsp;@Builder</b>
+<i>13</i>&nbsp;@Getter
+<b class="nc"><i>14</i>&nbsp;@NoArgsConstructor</b>
+<b class="fc"><i>15</i>&nbsp;@AllArgsConstructor</b>
+<b class="nc"><i>16</i>&nbsp;@EqualsAndHashCode</b>
+<b class="fc"><i>17</i>&nbsp;@ToString</b>
+<i>18</i>&nbsp;@JsonPropertyOrder({&quot;userId&quot;, &quot;firstName&quot;, &quot;lastName&quot;, &quot;employeeId&quot;, &quot;deleted&quot;})
+<i>19</i>&nbsp;public class User {
+<i>20</i>&nbsp;
+<b class="fc"><i>21</i>&nbsp;    private Integer userId;</b>
+<i>22</i>&nbsp;    @NotEmpty
+<b class="fc"><i>23</i>&nbsp;    private String firstName;</b>
+<i>24</i>&nbsp;    @NotEmpty
+<b class="fc"><i>25</i>&nbsp;    private String lastName;</b>
+<i>26</i>&nbsp;    @NotNull
+<b class="fc"><i>27</i>&nbsp;    private Integer employeeId;</b>
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    private boolean deleted;</b>
+<i>30</i>&nbsp;
+<i>31</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-08-19 00:26</div>
+</div>
+</body>
+</html>

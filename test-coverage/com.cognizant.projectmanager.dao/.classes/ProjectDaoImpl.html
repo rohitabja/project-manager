@@ -1,0 +1,261 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ProjectDaoImpl</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.cognizant.projectmanager.dao</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ProjectDaoImpl (com.cognizant.projectmanager.dao)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ProjectDaoImpl</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.8%
+  </span>
+  <span class="absValue">
+    (82/ 83)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">ProjectDaoImpl$$EnhancerBySpringCGLIB$$8466e072</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    98.8%
+  </span>
+  <span class="absValue">
+    (82/ 83)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.cognizant.projectmanager.dao;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.cognizant.projectmanager.model.Project;
+<i>4</i>&nbsp;import com.cognizant.projectmanager.model.Task;
+<i>5</i>&nbsp;import com.cognizant.projectmanager.model.User;
+<i>6</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>7</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>8</i>&nbsp;import org.springframework.jdbc.core.JdbcTemplate;
+<i>9</i>&nbsp;import org.springframework.jdbc.support.GeneratedKeyHolder;
+<i>10</i>&nbsp;import org.springframework.jdbc.support.KeyHolder;
+<i>11</i>&nbsp;import org.springframework.stereotype.Repository;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import java.sql.*;
+<i>14</i>&nbsp;import java.time.LocalDateTime;
+<i>15</i>&nbsp;import java.util.List;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;import static com.cognizant.projectmanager.util.AppConstants.*;
+<i>18</i>&nbsp;import static com.cognizant.projectmanager.util.AppUtil.*;
+<i>19</i>&nbsp;import static java.lang.Math.toIntExact;
+<i>20</i>&nbsp;import static java.util.Collections.emptyList;
+<i>21</i>&nbsp;import static java.util.Comparator.comparing;
+<i>22</i>&nbsp;import static java.util.Comparator.nullsLast;
+<i>23</i>&nbsp;import static java.util.stream.Collectors.groupingBy;
+<i>24</i>&nbsp;import static java.util.stream.Collectors.toList;
+<i>25</i>&nbsp;import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;/**
+<i>28</i>&nbsp; * Created by hp on 10-08-2019.
+<i>29</i>&nbsp; */
+<i>30</i>&nbsp;@Repository
+<b class="fc"><i>31</i>&nbsp;@Slf4j</b>
+<i>32</i>&nbsp;public class ProjectDaoImpl implements ProjectDao {
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    private final JdbcTemplate jdbcTemplate;
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;    @Autowired
+<b class="fc"><i>37</i>&nbsp;    public ProjectDaoImpl(final JdbcTemplate jdbcTemplate) {</b>
+<b class="fc"><i>38</i>&nbsp;        this.jdbcTemplate = jdbcTemplate;</b>
+<b class="fc"><i>39</i>&nbsp;    }</b>
+<i>40</i>&nbsp;
+<i>41</i>&nbsp;    @Override
+<i>42</i>&nbsp;    public Project getProject(final Integer projectId) {
+<b class="fc"><i>43</i>&nbsp;        return jdbcTemplate.queryForObject(&quot;select p.id_project, p.nm_project, p.dt_start, p.dt_end, p.priority, &quot; +</b>
+<i>44</i>&nbsp;                        &quot;u.id_user, u.nm_first, u.nm_last, u.id_employee &quot; +
+<i>45</i>&nbsp;                        &quot;from project p &quot; +
+<i>46</i>&nbsp;                        &quot;join user u &quot; +
+<i>47</i>&nbsp;                        &quot;   on u.id_user = p.id_user &quot; +
+<i>48</i>&nbsp;                        &quot;where id_project = ?&quot;,
+<i>49</i>&nbsp;                (resultSet, i) -&gt;
+<b class="fc"><i>50</i>&nbsp;                        Project.builder()</b>
+<b class="fc"><i>51</i>&nbsp;                                .projectId(resultSet.getInt(ID_PROJECT))</b>
+<b class="fc"><i>52</i>&nbsp;                                .projectName(resultSet.getString(NM_PROJECT))</b>
+<b class="fc"><i>53</i>&nbsp;                                .startDate(getLocalDate(resultSet.getDate(DT_START)))</b>
+<b class="fc"><i>54</i>&nbsp;                                .endDate(getLocalDate(resultSet.getDate(DT_END)))</b>
+<b class="fc"><i>55</i>&nbsp;                                .priority(getOptionalValue(resultSet, PRIORITY, Integer.class))</b>
+<b class="fc"><i>56</i>&nbsp;                                .manager(User.builder()</b>
+<b class="fc"><i>57</i>&nbsp;                                        .userId(resultSet.getInt(ID_USER))</b>
+<b class="fc"><i>58</i>&nbsp;                                        .firstName(resultSet.getString(NM_FIRST))</b>
+<b class="fc"><i>59</i>&nbsp;                                        .lastName(resultSet.getString(NM_LAST))</b>
+<b class="fc"><i>60</i>&nbsp;                                        .employeeId(resultSet.getInt(ID_EMPLOYEE))</b>
+<b class="fc"><i>61</i>&nbsp;                                        .build())</b>
+<b class="fc"><i>62</i>&nbsp;                                .build()</b>
+<i>63</i>&nbsp;                , projectId);
+<i>64</i>&nbsp;    }
+<i>65</i>&nbsp;
+<i>66</i>&nbsp;    @Override
+<i>67</i>&nbsp;    public List&lt;Project&gt; getProjects() {
+<b class="fc"><i>68</i>&nbsp;        return jdbcTemplate.query(</b>
+<i>69</i>&nbsp;                &quot;select p.id_project, p.nm_project, p.dt_start, p.dt_end, p.priority, p.dt_updated, &quot; +
+<i>70</i>&nbsp;                        &quot;t.id_task, t.nm_task, t.is_completed &quot; +
+<i>71</i>&nbsp;                        &quot;from project p &quot; +
+<i>72</i>&nbsp;                        &quot;left outer join task t &quot; +
+<i>73</i>&nbsp;                        &quot;   on t.id_project = p.id_project &quot; +
+<i>74</i>&nbsp;                        &quot;order by p.dt_updated desc&quot;,
+<i>75</i>&nbsp;                (resultSet, i) -&gt;
+<b class="fc"><i>76</i>&nbsp;                        Task.builder()</b>
+<b class="fc"><i>77</i>&nbsp;                                .taskId(resultSet.getInt(ID_TASK))</b>
+<b class="fc"><i>78</i>&nbsp;                                .taskName(resultSet.getString(NM_TASK))</b>
+<b class="fc"><i>79</i>&nbsp;                                .completed(getBoolean(resultSet.getString(IS_COMPLETED)))</b>
+<b class="fc"><i>80</i>&nbsp;                                .project(Project.builder()</b>
+<b class="fc"><i>81</i>&nbsp;                                        .projectId(resultSet.getInt(ID_PROJECT))</b>
+<b class="fc"><i>82</i>&nbsp;                                        .projectName(resultSet.getString(NM_PROJECT))</b>
+<b class="fc"><i>83</i>&nbsp;                                        .startDate(getLocalDate(resultSet.getDate(DT_START)))</b>
+<b class="fc"><i>84</i>&nbsp;                                        .endDate(getLocalDate(resultSet.getDate(DT_END)))</b>
+<b class="fc"><i>85</i>&nbsp;                                        .priority(getOptionalValue(resultSet, PRIORITY, Integer.class))</b>
+<b class="fc"><i>86</i>&nbsp;                                        .updatedDate(getLocalDateTime(resultSet.getTimestamp(DT_UPDATED)))</b>
+<b class="fc"><i>87</i>&nbsp;                                        .build())</b>
+<b class="fc"><i>88</i>&nbsp;                                .build())</b>
+<b class="fc"><i>89</i>&nbsp;                .stream()</b>
+<b class="fc"><i>90</i>&nbsp;                .collect(groupingBy(t -&gt; t.getProject()))</b>
+<b class="fc"><i>91</i>&nbsp;                .entrySet()</b>
+<b class="fc"><i>92</i>&nbsp;                .stream()</b>
+<b class="fc"><i>93</i>&nbsp;                .map(entry -&gt; Project.builder()</b>
+<b class="fc"><i>94</i>&nbsp;                        .projectId(entry.getKey().getProjectId())</b>
+<b class="fc"><i>95</i>&nbsp;                        .projectName(entry.getKey().getProjectName())</b>
+<b class="fc"><i>96</i>&nbsp;                        .startDate(entry.getKey().getStartDate())</b>
+<b class="fc"><i>97</i>&nbsp;                        .endDate(entry.getKey().getEndDate())</b>
+<b class="fc"><i>98</i>&nbsp;                        .priority(entry.getKey().getPriority())</b>
+<b class="fc"><i>99</i>&nbsp;                        .updatedDate(entry.getKey().getUpdatedDate())</b>
+<b class="fc"><i>100</i>&nbsp;                        .tasks(isEmptyTask(entry.getValue()) ? emptyList() : entry.getValue())</b>
+<b class="fc"><i>101</i>&nbsp;                        .noOfTasksCompleted(noOfTaskCompleted(entry.getValue()))</b>
+<b class="fc"><i>102</i>&nbsp;                        .build())</b>
+<b class="fc"><i>103</i>&nbsp;                .sorted(nullsLast(comparing(Project::getUpdatedDate)).reversed())</b>
+<b class="fc"><i>104</i>&nbsp;                .collect(toList());</b>
+<i>105</i>&nbsp;    }
+<i>106</i>&nbsp;
+<i>107</i>&nbsp;    private Integer noOfTaskCompleted(final List&lt;Task&gt; tasks) {
+<b class="fc"><i>108</i>&nbsp;        if(isEmptyTask(tasks)) {</b>
+<b class="fc"><i>109</i>&nbsp;            return 0;</b>
+<i>110</i>&nbsp;        }
+<i>111</i>&nbsp;
+<b class="nc"><i>112</i>&nbsp;        return toIntExact(tasks.stream().filter(c -&gt; c.isCompleted()).count());</b>
+<i>113</i>&nbsp;    }
+<i>114</i>&nbsp;
+<i>115</i>&nbsp;    private boolean isEmptyTask(final List&lt;Task&gt; tasks) {
+<b class="fc"><i>116</i>&nbsp;        return isEmpty(tasks)</b>
+<b class="fc"><i>117</i>&nbsp;                || (tasks.size() == 1</b>
+<b class="fc"><i>118</i>&nbsp;                &amp;&amp; (tasks.get(0).getTaskId() == null || tasks.get(0).getTaskId().intValue() == 0));</b>
+<i>119</i>&nbsp;    }
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;    @Override
+<i>122</i>&nbsp;    public Project addProject(final Project request) {
+<b class="fc"><i>123</i>&nbsp;        final KeyHolder keyHolder = new GeneratedKeyHolder();</b>
+<i>124</i>&nbsp;
+<b class="fc"><i>125</i>&nbsp;        log.info(&quot;Saving new Project {}&quot;, request);</b>
+<b class="fc"><i>126</i>&nbsp;        jdbcTemplate.update(connection -&gt; {</b>
+<b class="fc"><i>127</i>&nbsp;                    PreparedStatement ps = connection.prepareStatement(</b>
+<i>128</i>&nbsp;                            &quot;insert into project (nm_project, dt_start, dt_end, priority, id_user, dt_updated) &quot; +
+<i>129</i>&nbsp;                                    &quot;values (?, ?, ?, ?, ? ,?)&quot;, Statement.RETURN_GENERATED_KEYS);
+<b class="fc"><i>130</i>&nbsp;                    ps.setString(1, request.getProjectName().trim());</b>
+<b class="fc"><i>131</i>&nbsp;                    ps.setDate(2, getSqlDate(request.getStartDate()));</b>
+<b class="fc"><i>132</i>&nbsp;                    ps.setDate(3, getSqlDate(request.getEndDate()));</b>
+<b class="fc"><i>133</i>&nbsp;                    ps.setObject(4, request.getPriority(), Types.INTEGER);</b>
+<b class="fc"><i>134</i>&nbsp;                    ps.setInt(5, request.getManager().getUserId());</b>
+<b class="fc"><i>135</i>&nbsp;                    ps.setTimestamp(6, Timestamp.valueOf(LocalDateTime.now()));</b>
+<b class="fc"><i>136</i>&nbsp;                    return ps;</b>
+<i>137</i>&nbsp;                },
+<i>138</i>&nbsp;                keyHolder);
+<i>139</i>&nbsp;
+<b class="fc"><i>140</i>&nbsp;        final Project createdProject = Project.builder()</b>
+<b class="fc"><i>141</i>&nbsp;                .projectId(keyHolder.getKey().intValue())</b>
+<b class="fc"><i>142</i>&nbsp;                .projectName(request.getProjectName())</b>
+<b class="fc"><i>143</i>&nbsp;                .startDate(request.getStartDate())</b>
+<b class="fc"><i>144</i>&nbsp;                .endDate(request.getEndDate())</b>
+<b class="fc"><i>145</i>&nbsp;                .priority(request.getPriority())</b>
+<b class="fc"><i>146</i>&nbsp;                .manager(request.getManager())</b>
+<b class="fc"><i>147</i>&nbsp;                .build();</b>
+<i>148</i>&nbsp;
+<b class="fc"><i>149</i>&nbsp;        return createdProject;</b>
+<i>150</i>&nbsp;    }
+<i>151</i>&nbsp;
+<i>152</i>&nbsp;    @Override
+<i>153</i>&nbsp;    public Project updateProject(final Project request) {
+<b class="fc"><i>154</i>&nbsp;        jdbcTemplate.update(&quot;update project set &quot; +</b>
+<i>155</i>&nbsp;                        &quot;nm_project=?, dt_start=?, dt_end=?, priority=?, id_user=?, dt_updated=? &quot; +
+<i>156</i>&nbsp;                        &quot; where id_project=?&quot;,
+<b class="fc"><i>157</i>&nbsp;                request.getProjectName(),</b>
+<b class="fc"><i>158</i>&nbsp;                getSqlDate(request.getStartDate()),</b>
+<b class="fc"><i>159</i>&nbsp;                getSqlDate(request.getEndDate()),</b>
+<b class="fc"><i>160</i>&nbsp;                request.getPriority(),</b>
+<b class="fc"><i>161</i>&nbsp;                request.getManager().getUserId(),</b>
+<b class="fc"><i>162</i>&nbsp;                Timestamp.valueOf(LocalDateTime.now()),</b>
+<b class="fc"><i>163</i>&nbsp;                request.getProjectId());</b>
+<i>164</i>&nbsp;
+<b class="fc"><i>165</i>&nbsp;        return request;</b>
+<i>166</i>&nbsp;    }
+<i>167</i>&nbsp;
+<i>168</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-08-19 00:26</div>
+</div>
+</body>
+</html>

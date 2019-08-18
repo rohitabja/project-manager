@@ -1,0 +1,134 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: TaskController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.cognizant.projectmanager.controller</a> ]
+</div>
+
+<h1>Coverage Summary for Class: TaskController (com.cognizant.projectmanager.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">TaskController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (6/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.cognizant.projectmanager.controller;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import com.cognizant.projectmanager.model.ParentTask;
+<i>4</i>&nbsp;import com.cognizant.projectmanager.model.Task;
+<i>5</i>&nbsp;import com.cognizant.projectmanager.service.TaskService;
+<i>6</i>&nbsp;import lombok.extern.slf4j.Slf4j;
+<i>7</i>&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+<i>8</i>&nbsp;import org.springframework.web.bind.annotation.*;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;import javax.validation.Valid;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;@RestController
+<i>16</i>&nbsp;@RequestMapping(value = &quot;api/task&quot;, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+<b class="fc"><i>17</i>&nbsp;@Slf4j</b>
+<i>18</i>&nbsp;@CrossOrigin
+<i>19</i>&nbsp;public class TaskController {
+<i>20</i>&nbsp;
+<i>21</i>&nbsp;    private final TaskService taskService;
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    @Autowired
+<b class="fc"><i>24</i>&nbsp;    public TaskController(final TaskService taskService) {</b>
+<b class="fc"><i>25</i>&nbsp;        this.taskService = taskService;</b>
+<b class="fc"><i>26</i>&nbsp;    }</b>
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    @GetMapping(&quot;{taskId}&quot;)
+<i>29</i>&nbsp;    public Task getTaskByTaskId(@PathVariable(&quot;taskId&quot;) final Integer taskId) {
+<b class="fc"><i>30</i>&nbsp;        log.info(&quot;Retrieving task for taskId {}&quot;, taskId);</b>
+<b class="fc"><i>31</i>&nbsp;        return taskService.getTaskByTaskId(taskId);</b>
+<i>32</i>&nbsp;    }
+<i>33</i>&nbsp;
+<i>34</i>&nbsp;    @GetMapping(&quot;project/{projectId}&quot;)
+<i>35</i>&nbsp;    public List&lt;Task&gt; getTasksByProjectId(@PathVariable(&quot;projectId&quot;) final Integer projectId) {
+<b class="fc"><i>36</i>&nbsp;        log.info(&quot;Retrieving tasks for project Id {}&quot;, projectId);</b>
+<b class="fc"><i>37</i>&nbsp;        return taskService.getTasksByProjectId(projectId);</b>
+<i>38</i>&nbsp;    }
+<i>39</i>&nbsp;
+<i>40</i>&nbsp;    @GetMapping(value = &quot;parent&quot;, produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+<i>41</i>&nbsp;    public List&lt;ParentTask&gt; getParentTasks() {
+<b class="fc"><i>42</i>&nbsp;        log.info(&quot;Retrieving parent tasks&quot;);</b>
+<b class="fc"><i>43</i>&nbsp;        return taskService.getParentTasks();</b>
+<i>44</i>&nbsp;    }
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    @PostMapping
+<i>47</i>&nbsp;    public Task saveTask(@RequestBody @Valid final Task task) {
+<b class="fc"><i>48</i>&nbsp;        log.info(&quot;Saving task {}&quot;, task);</b>
+<b class="fc"><i>49</i>&nbsp;        return taskService.saveTask(task);</b>
+<i>50</i>&nbsp;    }
+<i>51</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2019-08-19 00:26</div>
+</div>
+</body>
+</html>
